@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #0b0f17;
+  color: #e7ecf5;
+  min-height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: #0b0f17;
+}
+*::-webkit-scrollbar-thumb {
+  background: #1f2a3d;
+  border-radius: 6px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #2a3a55;
+}
+
+@layer components {
+  .card {
+    @apply bg-bg-elevated border border-border rounded-lg p-4;
+  }
+  .card-hover {
+    @apply hover:border-border-strong hover:bg-bg-raised transition-colors;
+  }
+  .btn {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply btn bg-accent hover:bg-accent-hover text-white;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent hover:bg-bg-raised text-text-secondary hover:text-text-primary border border-border;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border;
+  }
+  .table-row {
+    @apply border-b border-border hover:bg-bg-raised/50 transition-colors;
+  }
+  .input {
+    @apply bg-bg border border-border rounded-md px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent;
+  }
+  .label {
+    @apply text-xs font-medium text-text-secondary uppercase tracking-wide;
+  }
+}
