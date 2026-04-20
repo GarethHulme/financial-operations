@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/PageHeader';
 import { StatusChip } from '@/components/chips/StatusChip';
 import { formatDate } from '@/lib/utils';
+import { UploadForm } from './UploadForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,10 +30,11 @@ export default async function DocumentsPage() {
         Preview matching surfaces OCR confidence, field confidence, suggested matches, duplicate risk flags, contract
         mismatch warnings, and credit limit warnings. No invoice enters workflow without preview confirmation.
       </div>
+      <UploadForm />
       <div className="space-y-2">
         {rows.length === 0 && (
           <div className="card text-center text-text-muted py-10">
-            No documents yet. POST to <code className="font-mono">/api/documents/upload</code> to ingest.
+            No documents yet. Upload a file above to ingest.
           </div>
         )}
         {rows.map((d) => {

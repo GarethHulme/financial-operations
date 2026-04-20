@@ -7,22 +7,22 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          DEFAULT: '#0b0f17',
-          elevated: '#111826',
-          raised: '#1a2332',
+          DEFAULT: '#0a1f17',
+          elevated: '#0f2b1f',
+          raised: '#132f22',
         },
         border: {
-          DEFAULT: '#1f2a3d',
-          strong: '#2a3a55',
+          DEFAULT: '#1a3d2c',
+          strong: '#245a3a',
         },
         text: {
-          primary: '#e7ecf5',
-          secondary: '#9aa7bd',
-          muted: '#6b7890',
+          primary: '#e7f5ef',
+          secondary: '#9abda8',
+          muted: '#5a8a6e',
         },
         accent: {
-          DEFAULT: '#3b82f6',
-          hover: '#2563eb',
+          DEFAULT: '#10b981',
+          hover: '#059669',
         },
         severity: {
           info: '#3b82f6',
@@ -35,11 +35,11 @@ const config: Config = {
           ok: '#10b981',
           pending: '#f59e0b',
           error: '#ef4444',
-          neutral: '#6b7890',
+          neutral: '#5a8a6e',
         },
       },
       fontFamily: {
-        sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'monospace'],
       },
     },

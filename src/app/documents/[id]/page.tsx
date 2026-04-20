@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/PageHeader';
 import { StatusChip } from '@/components/chips/StatusChip';
 import { formatDate, formatCurrency } from '@/lib/utils';
+import { ActionButtons } from './ActionButtons';
 
 export const dynamic = 'force-dynamic';
 
@@ -118,12 +119,7 @@ export default async function DocumentDetail({ params }: { params: { id: string 
               Confirm to create the finance record. Upload is never silent — nothing enters workflow without explicit
               confirmation.
             </p>
-            <div className="flex gap-2">
-              <button className="btn-primary" disabled={doc.status === 'confirmed'}>
-                Confirm & Create
-              </button>
-              <button className="btn-ghost">Reject</button>
-            </div>
+            <ActionButtons id={doc.id} currentStatus={doc.status} />
           </div>
         </div>
       </div>
