@@ -75,7 +75,20 @@ export default async function InvoicesPage({ searchParams }: { searchParams: { t
           Client ({cli.length})
         </Link>
       </div>
-      <DataTable columns={cols} rows={rows} emptyLabel="No invoices" />
+      <DataTable
+        columns={cols}
+        rows={rows}
+        emptyLabel="No invoices"
+        rowHref={(r) =>
+          tab === 'client'
+            ? r.clientId
+              ? `/clients/${r.clientId}`
+              : null
+            : r.supplierId
+              ? `/suppliers/${r.supplierId}`
+              : null
+        }
+      />
     </div>
   );
 }

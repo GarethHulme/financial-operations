@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { StatusChip } from '@/components/chips/StatusChip';
 import { formatDate, formatCurrency } from '@/lib/utils';
 import { ActionButtons } from './ActionButtons';
+import { DocumentViewer } from './DocumentViewer';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,15 +41,12 @@ export default async function DocumentDetail({ params }: { params: { id: string 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card">
           <div className="label mb-3">Original Document</div>
-          <div className="aspect-[3/4] bg-bg rounded-md border border-border flex items-center justify-center text-text-muted text-sm">
-            {doc.fileUrl ? (
-              <a href={doc.fileUrl} target="_blank" rel="noreferrer" className="text-accent underline">
-                Open file
-              </a>
-            ) : (
-              'Document preview placeholder'
-            )}
-          </div>
+          <DocumentViewer
+            fileUrl={doc.fileUrl}
+            mimeType={doc.mimeType}
+            fileName={doc.originalFileName}
+            sizeBytes={doc.sizeBytes}
+          />
           {doc.ocrConfidence != null && (
             <div className="mt-3 text-xs text-text-secondary">
               OCR confidence: {(Number(doc.ocrConfidence) * 100).toFixed(1)}%

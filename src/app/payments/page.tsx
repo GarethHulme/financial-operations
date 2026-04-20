@@ -61,11 +61,21 @@ export default async function PaymentsPage() {
       <PageHeader title="Payments" subtitle="Payments out to suppliers and payments in from clients." />
       <section>
         <h2 className="text-lg font-semibold mb-3">Supplier Payment Runs (Due Out)</h2>
-        <DataTable columns={outCols} rows={out} emptyLabel="No scheduled payments" />
+        <DataTable
+          columns={outCols}
+          rows={out}
+          emptyLabel="No scheduled payments"
+          rowHref={(r) => (r.supplierId ? `/suppliers/${r.supplierId}` : null)}
+        />
       </section>
       <section>
         <h2 className="text-lg font-semibold mb-3">Client Payments Received (Cash In)</h2>
-        <DataTable columns={inCols} rows={inn} emptyLabel="No payments received" />
+        <DataTable
+          columns={inCols}
+          rows={inn}
+          emptyLabel="No payments received"
+          rowHref={(r) => (r.clientId ? `/clients/${r.clientId}` : null)}
+        />
       </section>
     </div>
   );

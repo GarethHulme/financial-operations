@@ -5,7 +5,6 @@ import { PageHeader } from '@/components/PageHeader';
 import { DataTable, type Column } from '@/components/tables/DataTable';
 import { StatusChip } from '@/components/chips/StatusChip';
 import { formatCurrency, formatDate } from '@/lib/utils';
-import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,11 +30,7 @@ export default async function DisputesPage() {
     {
       key: 'invoiceNumber',
       header: 'Invoice',
-      render: (r) => (
-        <Link href={`/disputes/${r.id}`} className="font-mono text-xs hover:text-accent">
-          {r.invoiceNumber ?? '—'}
-        </Link>
-      ),
+      render: (r) => <span className="font-mono text-xs">{r.invoiceNumber ?? '—'}</span>,
     },
     { key: 'supplierName', header: 'Supplier' },
     { key: 'reasonCode', header: 'Reason' },
@@ -52,7 +47,7 @@ export default async function DisputesPage() {
       <div className="card mb-4 border-severity-blocking/40 bg-severity-blocking/5 text-xs text-text-secondary">
         Disputed invoices are automatically removed from payments due out, scheduled payment runs, and committed cash out.
       </div>
-      <DataTable columns={cols} rows={rows} emptyLabel="No disputes" />
+      <DataTable columns={cols} rows={rows} emptyLabel="No disputes" rowHref={(r) => `/disputes/${r.id}`} />
     </div>
   );
 }

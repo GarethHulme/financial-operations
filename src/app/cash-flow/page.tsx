@@ -2,8 +2,8 @@ import { getDb } from '@/db';
 import { cashFlowBuckets, supplierInvoices, clientInvoices, invoiceDisputes } from '@/db/schema';
 import { asc, sql, inArray, and, gte, lte } from 'drizzle-orm';
 import { PageHeader } from '@/components/PageHeader';
-import { DataTable, type Column } from '@/components/tables/DataTable';
 import { formatCurrency, startOfWeek, weekKey } from '@/lib/utils';
+import { WeekTable } from './WeekTable';
 
 export const dynamic = 'force-dynamic';
 
@@ -73,25 +73,6 @@ export default async function CashFlowPage() {
   const stored = await loadStored();
   const live = stored.length === 0 ? await computeLive() : stored;
 
-  const cols: Column<any>[] = [
-    { key: 'weekKey', header: 'Week' },
-    { key: 'weekStart', header: 'Start' },
-    { key: 'weekEnd', header: 'End' },
-    { key: 'dueOut', header: 'Due Out', align: 'right', render: (r) => formatCurrency(r.dueOut) },
-    { key: 'dueIn', header: 'Due In', align: 'right', render: (r) => formatCurrency(r.dueIn) },
-    { key: 'disputedHold', header: 'Disputed Hold', align: 'right', render: (r) => formatCurrency(r.disputedHold) },
-    {
-      key: 'netCash',
-      header: 'Net',
-      align: 'right',
-      render: (r) => (
-        <span className={Number(r.netCash) >= 0 ? 'text-status-ok' : 'text-severity-critical'}>
-          {formatCurrency(r.netCash)}
-        </span>
-      ),
-    },
-  ];
-
   const totalOut = live.reduce((s, r) => s + Number(r.dueOut), 0);
   const totalIn = live.reduce((s, r) => s + Number(r.dueIn), 0);
   const totalDisp = live.reduce((s, r) => s + Number(r.disputedHold), 0);
@@ -99,7 +80,7 @@ export default async function CashFlowPage() {
 
   return (
     <div>
-      <PageHeader title="Cash Flow" subtitle="Rolling 13-week cash flow with due out, due in, disputed hold, and net." />
+      <PageHeader title="Cash Flow" subtitle="Rolling 13-week cash flow with due out, due in, disputed hold, and net. Click a week to expand." />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="card">
           <div className="label">13-Week Due Out</div>
@@ -120,7 +101,7 @@ export default async function CashFlowPage() {
           </div>
         </div>
       </div>
-      <DataTable columns={cols} rows={live} emptyLabel="No cash flow data" />
+      <WeekTable rows={live as any} />
     </div>
   );
 }

@@ -10,6 +10,7 @@ interface MetricCardProps {
   href?: string;
   tone?: 'default' | 'positive' | 'negative' | 'warning' | 'critical' | 'blocking';
   icon?: ReactNode;
+  breakdown?: string;
 }
 
 const toneStyles: Record<NonNullable<MetricCardProps['tone']>, string> = {
@@ -30,25 +31,37 @@ const toneAccent: Record<NonNullable<MetricCardProps['tone']>, string> = {
   blocking: 'text-severity-blocking',
 };
 
-export function MetricCard({ label, value, delta, hint, href, tone = 'default', icon }: MetricCardProps) {
+export function MetricCard({ label, value, delta, hint, href, tone = 'default', icon, breakdown }: MetricCardProps) {
+  const tooltip = [hint, breakdown].filter(Boolean).join(' — ');
   const inner = (
     <div
       className={cn(
-        'card card-hover cursor-pointer relative group h-full',
+        'card card-hover cursor-pointer relative group h-full transition-all',
         toneStyles[tone],
       )}
-      title={hint}
     >
       <div className="flex items-start justify-between">
         <div className="label">{label}</div>
-        {icon && <div className="text-text-muted group-hover:text-text-primary">{icon}</div>}
+        <div className="flex items-center gap-1.5 text-text-muted">
+          {icon && <span className="group-hover:text-text-primary transition-colors">{icon}</span>}
+          {href && (
+            <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity text-sm">
+              →
+            </span>
+          )}
+        </div>
       </div>
       <div className={cn('text-2xl font-semibold mt-2', toneAccent[tone])}>{value}</div>
       {delta && <div className="text-xs text-text-muted mt-1">{delta}</div>}
-      {hint && (
-        <div className="absolute inset-x-0 -bottom-2 translate-y-full opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+      {tooltip && (
+        <div className="absolute inset-x-0 -bottom-2 translate-y-full opacity-0 group-hover:opacity-100 transition-opacity delay-150 z-10 pointer-events-none">
           <div className="mx-2 mt-1 bg-bg-raised border border-border-strong rounded-md p-2 text-xs text-text-secondary shadow-lg">
-            {hint}
+            {hint && <div>{hint}</div>}
+            {breakdown && (
+              <div className={cn('text-text-muted', hint && 'mt-1 pt-1 border-t border-border')}>
+                {breakdown}
+              </div>
+            )}
           </div>
         </div>
       )}

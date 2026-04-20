@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
@@ -14,12 +15,15 @@ export function DataTable<T extends Record<string, any>>({
   rows,
   emptyLabel = 'No records',
   onRowClick,
+  rowHref,
 }: {
   columns: Column<T>[];
   rows: T[];
   emptyLabel?: string;
   onRowClick?: (row: T) => void;
+  rowHref?: (row: T) => string | null | undefined;
 }) {
+  const interactive = Boolean(onRowClick || rowHref);
   return (
     <div className="card p-0 overflow-hidden">
       <div className="overflow-x-auto">
@@ -49,26 +53,48 @@ export function DataTable<T extends Record<string, any>>({
                 </td>
               </tr>
             ) : (
-              rows.map((row, i) => (
-                <tr
-                  key={row.id ?? i}
-                  className={cn('table-row', onRowClick && 'cursor-pointer')}
-                  onClick={onRowClick ? () => onRowClick(row) : undefined}
-                >
-                  {columns.map((c) => (
-                    <td
-                      key={c.key}
-                      className={cn(
-                        'px-4 py-2.5 text-text-primary',
-                        c.align === 'right' && 'text-right',
-                        c.align === 'center' && 'text-center',
-                      )}
-                    >
-                      {c.render ? c.render(row) : row[c.key]}
-                    </td>
-                  ))}
-                </tr>
-              ))
+              rows.map((row, i) => {
+                const href = rowHref ? rowHref(row) : null;
+                const cells = columns.map((c) => (
+                  <td
+                    key={c.key}
+                    className={cn(
+                      'px-4 py-2.5 text-text-primary',
+                      c.align === 'right' && 'text-right',
+                      c.align === 'center' && 'text-center',
+                    )}
+                  >
+                    {href ? (
+                      <Link
+                        href={href}
+                        className={cn(
+                          'block -mx-4 -my-2.5 px-4 py-2.5',
+                          c.align === 'right' && 'text-right',
+                          c.align === 'center' && 'text-center',
+                        )}
+                      >
+                        {c.render ? c.render(row) : row[c.key]}
+                      </Link>
+                    ) : c.render ? (
+                      c.render(row)
+                    ) : (
+                      row[c.key]
+                    )}
+                  </td>
+                ));
+                return (
+                  <tr
+                    key={row.id ?? i}
+                    className={cn(
+                      'table-row',
+                      interactive && 'cursor-pointer hover:bg-bg-raised/70 transition-colors',
+                    )}
+                    onClick={onRowClick ? () => onRowClick(row) : undefined}
+                  >
+                    {cells}
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
