@@ -416,7 +416,7 @@ async function main() {
       disputed: i === 2 ? '2520' : '0',
       forecastCommitted: '0',
       projectedExposure: String(60000 + i * 30000),
-      status: i === 2 ? 'warning' : 'within_limit',
+      status: i === 2 ? 'warning' as const : 'within_limit' as const,
     })),
   );
 
