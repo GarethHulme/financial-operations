@@ -13,6 +13,7 @@ import {
   Upload,
   Bell,
 } from 'lucide-react';
+import UserBadge from '@/components/UserBadge';
 
 export const metadata: Metadata = {
   title: 'DCS Command Suite — Financial Operations',
@@ -74,7 +75,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </nav>
             </aside>
             <main className="flex-1 overflow-x-hidden">
-              <div className="max-w-[1600px] mx-auto p-6">{children}</div>
+              <div className="max-w-[1600px] mx-auto">
+                <div className="flex items-center justify-end px-6 pt-6">
+                  <UserBadge />
+                </div>
+                <div className="p-6">{children}</div>
+              </div>
             </main>
           </div>
           <footer className="border-t border-border bg-bg-elevated px-6 py-3 text-xs text-text-muted text-center">
