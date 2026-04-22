@@ -5,7 +5,7 @@ const COOKIE = 'dcs_auth';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const { email, password, rememberMe } = await req.json();
 
     if (!email || !password) {
       return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     const response = NextResponse.json({ user });
+    const maxAge = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60;
     response.cookies.set(
       COOKIE,
       Buffer.from(JSON.stringify(user)).toString('base64'),
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
         httpOnly: false,
         sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60,
+        maxAge,
         path: '/',
       }
     );

@@ -7,6 +7,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +19,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/sso-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, rememberMe }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -109,6 +110,22 @@ export default function LoginPage() {
                 border: '1px solid rgba(255,255,255,0.09)',
               }}
             />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              id="remember"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={e => setRememberMe(e.target.checked)}
+              style={{ width: 14, height: 14, accentColor: '#22a075', cursor: 'pointer' }}
+            />
+            <label
+              htmlFor="remember"
+              style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', cursor: 'pointer', userSelect: 'none' }}
+            >
+              Remember me
+            </label>
           </div>
 
           {error && (
