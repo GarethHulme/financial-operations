@@ -811,5 +811,37 @@ export const eventOutbox = pgTable(
   }),
 );
 
+// ---------- AUTH: LOCAL USERS + PASSWORD RESET ----------
+
+export const authUsers = pgTable(
+  'auth_users',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    email: varchar('email', { length: 255 }).notNull().unique(),
+    passwordHash: text('password_hash'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    emailIdx: index('auth_users_email_idx').on(t.email),
+  }),
+);
+
+export const passwordResetTokens = pgTable(
+  'password_reset_tokens',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: uuid('user_id').notNull().references(() => authUsers.id, { onDelete: 'cascade' }),
+    tokenHash: varchar('token_hash', { length: 128 }).notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    usedAt: timestamp('used_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    tokenHashIdx: index('password_reset_tokens_token_hash_idx').on(t.tokenHash),
+    userIdIdx: index('password_reset_tokens_user_id_idx').on(t.userId),
+  }),
+);
+
 // re-export sql for convenience in migrations
 export { sql };
