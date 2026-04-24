@@ -6,7 +6,12 @@ const COOKIE = 'dcs_auth';
 export async function middleware(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
 
-  if (pathname.startsWith('/login') || pathname.startsWith('/api/')) {
+  if (
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/forgot-password') ||
+    pathname.startsWith('/reset-password') ||
+    pathname.startsWith('/api/')
+  ) {
     return NextResponse.next();
   }
 
